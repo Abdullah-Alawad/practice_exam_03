@@ -50,6 +50,11 @@ int	print_str(char *str)
 	int	len;
 
 	len = 0;
+	if (!str)
+	{
+		len += write(1, "(null)", 6);
+		return (len);
+	}
 	while (str[len])
 	{
 		write(1, &str[len], 1);
@@ -66,7 +71,8 @@ int	print_number(int num)
 	len = 0;
 	str = ft_itoa(num);
 	len = print_str(str);
-	free (str);
+	if (str)
+		free (str);
 	return (len);
 }
 
@@ -131,9 +137,11 @@ int	ft_printf(const char *s, ...)
 
 int main(void)
 {
-	int l = ft_printf("hello %s, age: %d..\n", "Abdullah", -21);
+	char *s = NULL;
+
+	int l = ft_printf("hello %s, age: %d..\n", s, -21);
 	printf("my fun: %d\n", l);
-	l = printf("hello %s, age: %d..\n", "Abdullah", -21);
+	l = printf("hello %s, age: %d..\n", s, -21);
 	printf("og fun: %d\n", l);
 	ft_printf("my hex cases: %x, %x, %x\n", 42, 2147483647, 255);
 	printf("og hex cases: %x, %x, %x\n", 42, 2147483647, 255);
