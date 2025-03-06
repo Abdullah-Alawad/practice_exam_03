@@ -1,9 +1,9 @@
 #include <stdlib.h>
 #include <unistd.h>
 
-# define BUFFER_SIZE 42
+//# define BUFFER_SIZE 42
 
-int	ft_strlen(const char *s)
+int	ft_strlen(char *s)
 {
 	int	len;
 
@@ -27,7 +27,7 @@ int	ft_strchr(const char *s, char c)
 	return (0);
 }
 
-char	*ft_strjoin(const char *s1, const char *s2)
+char	*ft_strjoin(char *s1, char *s2)
 {
 	char	*res;
 	int		len1;
@@ -82,6 +82,7 @@ char	*set_next(char *buffer)
 	j = 0;
 	while (buffer[i] != '\0')
 		line[j++] = buffer[i++];
+	line[j] = '\0';
 	free(buffer);
 	return (line);
 }
@@ -90,6 +91,7 @@ char	*set_line(char *buffer)
 {
 	char	*line;
 	int		i;
+	int		j;
 
 	i = 0;
 	if (!buffer[i])
@@ -97,6 +99,9 @@ char	*set_line(char *buffer)
 	while (buffer[i] != '\0' && buffer[i] != '\n')
 		i++;
 	line = malloc(i + 2);
+	j = 0;
+	while (j < i + 2)
+		line[j++] = '\0';
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -143,7 +148,10 @@ char	*read_file(int fd, char *res)
 	int		byte_read;
 
 	if (!res)
+	{
 		res = malloc(1);
+		res[0] = '\0';
+	}
 	if (!res)
 		return (NULL);
 	buffer = malloc(BUFFER_SIZE + 1);
@@ -196,13 +204,11 @@ char	*get_next_line(int fd)
 
 int main(void)
 {
-	char *s;
+	char *s = NULL;
 	int	fd;
 
 	fd = open("test.txt", O_RDONLY);
-	while ((s = get_next_line(fd)))
-	{
-		printf("%s", s);
-		free(s);
-	}
+	s = get_next_line(fd);
+	printf("%s", s);
+	free(s);
 }
