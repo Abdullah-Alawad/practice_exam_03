@@ -110,7 +110,6 @@ char	*set_line(char *buffer)
 		line[i] = '\n';
 		i++;
 	}
-	line[i] = '\0';
 	return (line);
 }
 
@@ -160,7 +159,7 @@ char	*read_file(int fd, char *res)
 		res = join_str(res, buffer, byte_read);
 		if (!res)
 			return (NULL);
-		if (ft_strchr(buffer, '\n'));
+		if (ft_strchr(buffer, '\n'))
 			break;
 	}
 	free (buffer);
@@ -190,4 +189,20 @@ char	*get_next_line(int fd)
 		return (NULL);
 	}
 	return (line);
+}
+
+#include <stdio.h>
+#include <fcntl.h>
+
+int main(void)
+{
+	char *s;
+	int	fd;
+
+	fd = open("test.txt", O_RDONLY);
+	while ((s = get_next_line(fd)))
+	{
+		printf("%s", s);
+		free(s);
+	}
 }
